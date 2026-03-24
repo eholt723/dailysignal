@@ -1,0 +1,25 @@
+# Environment
+.env
+.env.*
+
+# Claude
+CLAUDE.md
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Misc
+*.log
+.DS_Store
