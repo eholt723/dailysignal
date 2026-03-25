@@ -1,0 +1,18 @@
+[project]
+name = "dailysignal"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "pytest-mock>=3.14",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["pipeline"]
+
+[tool.coverage.run]
+source = ["pipeline"]
+omit = ["pipeline/run.py"]
