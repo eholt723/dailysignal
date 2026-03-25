@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, NavLink } from "react-router-dom";
-import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import History from "./pages/History";
-import Admin from "./pages/Admin";
 import Subscribe from "./pages/Subscribe";
 import Unsubscribe from "./pages/Unsubscribe";
 import About from "./pages/About";
 
 const navLinks = [
-  { to: "/", label: "Briefings", end: true },
-  { to: "/history", label: "History" },
-  { to: "/admin", label: "Admin" },
+  { to: "/", label: "Dashboard", end: true },
+  { to: "/history", label: "Archive" },
   { to: "/about", label: "About" },
 ];
 
@@ -76,9 +74,8 @@ export default function App() {
 
       <main className="max-w-3xl mx-auto px-4 py-8">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/history" element={<History />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/subscribe" element={<Subscribe />} />
           <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/about" element={<About />} />
