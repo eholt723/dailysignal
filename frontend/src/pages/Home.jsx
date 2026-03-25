@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 function BriefingCard({ briefing }) {
   const label = briefing.period === "morning" ? "Morning" : "Afternoon";
-  const date = new Date(briefing.run_at).toLocaleDateString("en-US", {
+  const d = new Date(briefing.run_at);
+  const date = d.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
+    timeZone: "UTC",
+  });
+  const time = d.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "UTC",
+    hour12: false,
   });
 
   return (
@@ -14,10 +23,33 @@ function BriefingCard({ briefing }) {
         <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">
           {label} Briefing
         </span>
-        <span className="text-xs text-gray-500">{date}</span>
+        <span className="text-xs text-gray-500">{date} · {time} UTC</span>
       </div>
-      <div className="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
-        {briefing.content}
+      <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed space-y-2">
+        <ReactMarkdown
+          components={{
+            h2: ({ children }) => (
+              <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 mt-4 mb-1">
+                {children}
+              </h2>
+            ),
+            p: ({ children }) => <p className="mb-2">{children}</p>,
+            ul: ({ children }) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
+            li: ({ children }) => <li>{children}</li>,
+            a: ({ href, children }) => (
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-600 dark:text-cyan-400 hover:underline"
+              >
+                {children}
+              </a>
+            ),
+          }}
+        >
+          {briefing.content}
+        </ReactMarkdown>
       </div>
       <div className="pt-2 border-t border-gray-200 dark:border-gray-800 flex gap-4 flex-wrap text-xs text-gray-500">
         {Object.entries(briefing.source_counts).map(([source, count]) => (

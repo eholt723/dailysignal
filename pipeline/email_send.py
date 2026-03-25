@@ -3,6 +3,8 @@ Send the briefing to all active subscribers via Resend.
 Logs delivery status per subscriber. Deactivates subscribers after 3 consecutive failures.
 """
 
+import re
+
 import resend
 import psycopg2
 
@@ -10,20 +12,29 @@ FAIL_THRESHOLD = 3
 FROM_ADDRESS = "DailySignal <dailysignal@ericholt.dev>"
 
 
+def _linkify(text: str) -> str:
+    """Convert markdown links [text](url) to HTML anchor tags."""
+    return re.sub(
+        r'\[([^\]]+)\]\((https?://[^\)]+)\)',
+        r'<a href="\2">\1</a>',
+        text,
+    )
+
+
 def _markdown_to_html(md: str) -> str:
-    """Minimal markdown -> HTML (headers and line breaks only)."""
+    """Minimal markdown -> HTML (headers, line breaks, and links)."""
     lines = []
     for line in md.split("\n"):
         if line.startswith("## "):
-            lines.append(f"<h2>{line[3:]}</h2>")
+            lines.append(f"<h2>{_linkify(line[3:])}</h2>")
         elif line.startswith("# "):
-            lines.append(f"<h1>{line[2:]}</h1>")
+            lines.append(f"<h1>{_linkify(line[2:])}</h1>")
         elif line.startswith("- "):
-            lines.append(f"<li>{line[2:]}</li>")
+            lines.append(f"<li>{_linkify(line[2:])}</li>")
         elif line.strip() == "":
             lines.append("<br>")
         else:
-            lines.append(f"<p>{line}</p>")
+            lines.append(f"<p>{_linkify(line)}</p>")
     return "\n".join(lines)
 
 

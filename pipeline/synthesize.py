@@ -16,7 +16,7 @@ Your briefings are structured into three sections:
 
 Rules:
 - Write in plain English, no jargon
-- Each item: one sentence max, include the source in parentheses
+- Each item: one sentence max, link the source name to the article URL using markdown format: ([SourceName](url))
 - No filler phrases like "In today's briefing..." or "That's all for now"
 - If a section has nothing relevant, omit it entirely
 - Total length: 250-400 words
