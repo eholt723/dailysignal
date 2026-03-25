@@ -20,16 +20,16 @@ export default function Unsubscribe() {
   }, [token]);
 
   const messages = {
-    loading: { text: "Processing...", color: "text-gray-400" },
+    loading: { text: "Processing...", color: "text-gray-500" },
     success: {
       text: "You've been unsubscribed. You won't receive any more briefings.",
-      color: "text-green-400",
+      color: "text-green-600 dark:text-green-400",
     },
     invalid: {
       text: "This unsubscribe link is invalid or has already been used.",
-      color: "text-red-400",
+      color: "text-red-500 dark:text-red-400",
     },
-    error: { text: "Something went wrong. Please try again.", color: "text-red-400" },
+    error: { text: "Something went wrong. Please try again.", color: "text-red-500 dark:text-red-400" },
   };
 
   const { text, color } = messages[status];

@@ -33,14 +33,14 @@ export default function Subscribe() {
     <div className="max-w-md mx-auto mt-8 space-y-6">
       <div>
         <h1 className="text-xl font-semibold">Subscribe</h1>
-        <p className="text-sm text-gray-400 mt-1">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
           Get AI-synthesized tech briefings delivered twice daily — morning and
           afternoon.
         </p>
       </div>
 
       {status === "success" ? (
-        <div className="rounded-xl border border-green-800 bg-green-900/20 p-5 text-green-400 text-sm">
+        <div className="rounded-xl border border-green-300 dark:border-green-800 bg-green-50 dark:bg-green-900/20 p-5 text-green-700 dark:text-green-400 text-sm">
           You're subscribed. Check your inbox soon.
         </div>
       ) : (
@@ -51,7 +51,7 @@ export default function Subscribe() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-cyan-600"
+            className="flex-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-cyan-600"
           />
           <button
             type="submit"
@@ -64,7 +64,7 @@ export default function Subscribe() {
       )}
 
       {status && status !== "success" && (
-        <p className="text-red-400 text-sm">{status}</p>
+        <p className="text-red-500 dark:text-red-400 text-sm">{status}</p>
       )}
     </div>
   );

@@ -33,9 +33,9 @@ export default function Admin() {
           ].map(({ label, value }) => (
             <div
               key={label}
-              className="rounded-xl border border-gray-800 bg-gray-900 p-4 text-center"
+              className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 text-center"
             >
-              <div className="text-2xl font-semibold text-cyan-400">{value}</div>
+              <div className="text-2xl font-semibold text-cyan-600 dark:text-cyan-400">{value}</div>
               <div className="text-xs text-gray-500 mt-1">{label}</div>
             </div>
           ))}
@@ -44,7 +44,7 @@ export default function Admin() {
 
       <div>
         <h2 className="text-lg font-semibold mb-3">Recent Deliveries</h2>
-        <div className="rounded-xl border border-gray-800 bg-gray-900 divide-y divide-gray-800">
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
           {deliveries.length === 0 ? (
             <p className="text-gray-500 text-sm p-6">No deliveries yet.</p>
           ) : (
@@ -54,13 +54,13 @@ export default function Admin() {
                   <span
                     className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       d.status === "sent"
-                        ? "bg-green-900/40 text-green-400"
-                        : "bg-red-900/40 text-red-400"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400"
+                        : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400"
                     }`}
                   >
                     {d.status}
                   </span>
-                  <span className="text-gray-400">{d.email}</span>
+                  <span className="text-gray-600 dark:text-gray-400">{d.email}</span>
                 </div>
                 <span className="text-gray-500 text-xs">
                   {new Date(d.attempted_at).toLocaleString()}

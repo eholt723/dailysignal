@@ -7,6 +7,8 @@ sdk: docker
 pinned: false
 ---
 
+[![CI](https://github.com/eholt723/dailysignal/actions/workflows/ci.yml/badge.svg)](https://github.com/eholt723/dailysignal/actions/workflows/ci.yml)
+
 # DailySignal
 
 Automated AI news briefing service. Fetches from HackerNews, Product Hunt, and RSS feeds twice daily, synthesizes a briefing via Groq, and emails it to subscribers.

@@ -17,7 +17,7 @@ export default function History() {
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Run History</h1>
-      <div className="rounded-xl border border-gray-800 bg-gray-900 divide-y divide-gray-800">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
         {runs.length === 0 ? (
           <p className="text-gray-500 text-sm p-6">No runs yet.</p>
         ) : (
@@ -33,13 +33,13 @@ export default function History() {
                   <span
                     className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       run.period === "morning"
-                        ? "bg-amber-900/40 text-amber-400"
-                        : "bg-indigo-900/40 text-indigo-400"
+                        ? "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400"
+                        : "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-400"
                     }`}
                   >
                     {run.period}
                   </span>
-                  <span className="text-gray-300">
+                  <span className="text-gray-700 dark:text-gray-300">
                     {dt.toLocaleDateString("en-US", {
                       weekday: "short",
                       month: "short",
