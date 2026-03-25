@@ -21,19 +21,19 @@ from email_send import send_briefing
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--period", required=True, choices=["morning", "afternoon"])
+    parser.add_argument("--force", action="store_true", help="skip dedup and send regardless of new items")
     args = parser.parse_args()
 
     db_url = os.environ["DATABASE_URL"]
     groq_api_key = os.environ["GROQ_API_KEY"]
     product_hunt_api_key = os.environ["PRODUCT_HUNT_API_KEY"]
-    gmail_user = os.environ["GMAIL_USER"]
-    gmail_password = os.environ["GMAIL_PASSWORD"]
+    resend_api_key = os.environ["RESEND_API_KEY"]
     base_url = os.environ.get("BASE_URL", "https://huggingface.co/spaces/eholt723/dailysignal")
 
     print(f"[run] starting {args.period} pipeline")
 
     items = fetch_all(product_hunt_api_key)
-    new_items = filter_new(items, db_url)
+    new_items = items if args.force else filter_new(items, db_url)
 
     if not new_items:
         print("[run] no new items after dedup — skipping briefing")
@@ -41,7 +41,7 @@ def main():
 
     content = synthesize(new_items, args.period, groq_api_key)
     briefing_id = save(content, args.period, new_items, db_url)
-    send_briefing(briefing_id, args.period, content, db_url, gmail_user, gmail_password, base_url)
+    send_briefing(briefing_id, args.period, content, db_url, resend_api_key, base_url)
 
     print(f"[run] pipeline complete — briefing {briefing_id}")
 
