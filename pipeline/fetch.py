@@ -11,7 +11,7 @@ RSS_FEEDS = [
     ("TechCrunch", "https://techcrunch.com/feed/"),
     ("VentureBeat", "https://venturebeat.com/feed/"),
     ("GitHub Blog", "https://github.blog/feed/"),
-    ("Anthropic", "https://www.anthropic.com/rss.xml"),
+    ("Hugging Face", "https://huggingface.co/blog/feed.xml"),
     ("a16z", "https://a16z.com/feed/"),
 ]
 
