@@ -65,7 +65,7 @@ class TestFetchRss:
         items = fetch_rss()
         sources = {item["source"] for item in items}
         # all sources should be from the RSS_FEEDS list
-        assert sources.issubset({"TechCrunch", "VentureBeat", "GitHub Blog", "Hugging Face", "a16z"})
+        assert sources.issubset({"TechCrunch", "VentureBeat", "GitHub Blog", "Hugging Face", "a16z", "The Verge", "Ars Technica", "MIT Tech Review"})
 
 
 class TestFetchHackerNews:
