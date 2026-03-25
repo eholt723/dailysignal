@@ -13,6 +13,9 @@ RSS_FEEDS = [
     ("GitHub Blog", "https://github.blog/feed/"),
     ("Hugging Face", "https://huggingface.co/blog/feed.xml"),
     ("a16z", "https://a16z.com/feed/"),
+    ("The Verge", "https://www.theverge.com/rss/index.xml"),
+    ("Ars Technica", "https://feeds.arstechnica.com/arstechnica/index"),
+    ("MIT Tech Review", "https://www.technologyreview.com/feed/"),
 ]
 
 HN_TOP_URL = "https://hacker-news.firebaseio.com/v0/topstories.json"
