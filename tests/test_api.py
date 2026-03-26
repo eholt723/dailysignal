@@ -26,7 +26,11 @@ def make_mock_conn(fetchall_return=None, fetchone_return=None):
 
 class TestSubscribe:
     def test_valid_email_returns_200(self, mocker):
-        mocker.patch("api.get_conn", return_value=make_mock_conn())
+        mock_conn = make_mock_conn()
+        # First fetchone: RETURNING id, unsubscribe_token; second: latest briefing (None = no briefing yet)
+        mock_conn.cursor.return_value.fetchone.side_effect = [(1, "tok"), None]
+        mocker.patch("api.get_conn", return_value=mock_conn)
+        mocker.patch("api.send_to_one")
         res = client.post("/subscribe", json={"email": "user@example.com"})
         assert res.status_code == 200
         assert res.json()["status"] == "subscribed"
