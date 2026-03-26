@@ -12,6 +12,8 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
+from email_send import send_to_one
+
 app = FastAPI()
 
 app.add_middleware(
@@ -78,10 +80,38 @@ def subscribe(body: SubscribeRequest):
                     VALUES (%s, %s)
                     ON CONFLICT (email) DO UPDATE
                         SET is_active = TRUE, fail_count = 0
+                    RETURNING id, unsubscribe_token
                 """, (body.email, token))
+                sub_id, sub_token = cur.fetchone()
+
+                cur.execute("""
+                    SELECT id, period, content FROM briefings
+                    ORDER BY run_at DESC LIMIT 1
+                """)
+                briefing = cur.fetchone()
             conn.commit()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+    if briefing:
+        db_url = os.environ["DATABASE_URL"]
+        resend_api_key = os.environ.get("RESEND_API_KEY", "")
+        base_url = os.environ.get("BASE_URL", "https://ericholt-dailysignal.hf.space")
+        try:
+            send_to_one(
+                briefing_id=briefing[0],
+                period=briefing[1],
+                content=briefing[2],
+                subscriber_id=sub_id,
+                email=body.email,
+                unsubscribe_token=sub_token,
+                db_url=db_url,
+                resend_api_key=resend_api_key,
+                base_url=base_url,
+            )
+        except Exception as e:
+            print(f"[subscribe] welcome email failed: {e}")
+
     return {"status": "subscribed"}
 
 

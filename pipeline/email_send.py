@@ -116,3 +116,61 @@ def send_briefing(
             conn.commit()
 
     print(f"[email] delivered briefing {briefing_id} to {len(subscribers)} subscribers")
+
+
+def send_to_one(
+    briefing_id: int,
+    period: str,
+    content: str,
+    subscriber_id: int,
+    email: str,
+    unsubscribe_token: str,
+    db_url: str,
+    resend_api_key: str,
+    base_url: str,
+) -> None:
+    """Send a single briefing email to one subscriber (used for welcome sends)."""
+    resend.api_key = resend_api_key
+
+    period_label = "Morning" if period == "morning" else "Afternoon"
+    subject = f"DailySignal {period_label} Briefing"
+    briefing_html = _markdown_to_html(content)
+
+    unsubscribe_url = f"{base_url}/unsubscribe?token={unsubscribe_token}"
+    footer = (
+        f'<br><br><hr>'
+        f'<p style="font-size:12px;color:#888;">No journalists were harmed in the making of this briefing.</p>'
+        f'<p style="font-size:12px;color:#888;">Built by Eric Holt &middot; <a href="https://ericholt.dev">ericholt.dev</a></p>'
+        f'<p style="font-size:12px;"><a href="{unsubscribe_url}">Unsubscribe</a></p>'
+    )
+    html = f"<html><body>{briefing_html}{footer}</body></html>"
+    text = content + f"\n\nNo journalists were harmed in the making of this briefing.\nBuilt by Eric Holt · ericholt.dev\n\nUnsubscribe: {unsubscribe_url}"
+
+    status = "sent"
+    error_msg = None
+
+    try:
+        resend.Emails.send({
+            "from": FROM_ADDRESS,
+            "to": email,
+            "subject": subject,
+            "html": html,
+            "text": text,
+        })
+    except Exception as e:
+        status = "failed"
+        error_msg = str(e)
+        print(f"[email] welcome send failed to {email}: {e}")
+
+    with psycopg2.connect(db_url) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO delivery_log (briefing_id, subscriber_id, status, error_msg)
+                VALUES (%s, %s, %s, %s)
+                """,
+                (briefing_id, subscriber_id, status, error_msg),
+            )
+        conn.commit()
+
+    print(f"[email] welcome send to {email}: {status}")
