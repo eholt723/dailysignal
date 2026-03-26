@@ -28,7 +28,7 @@ def main():
     groq_api_key = os.environ["GROQ_API_KEY"]
     product_hunt_api_key = os.environ["PRODUCT_HUNT_API_KEY"]
     resend_api_key = os.environ["RESEND_API_KEY"]
-    base_url = os.environ.get("BASE_URL", "https://huggingface.co/spaces/eholt723/dailysignal")
+    base_url = os.environ.get("BASE_URL", "https://ericholt-dailysignal.hf.space")
 
     print(f"[run] starting {args.period} pipeline")
 
