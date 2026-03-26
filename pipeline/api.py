@@ -96,7 +96,7 @@ def subscribe(body: SubscribeRequest):
     if briefing:
         db_url = os.environ["DATABASE_URL"]
         resend_api_key = os.environ.get("RESEND_API_KEY", "")
-        base_url = os.environ.get("BASE_URL", "https://ericholt-dailysignal.hf.space")
+        base_url = os.environ.get("BASE_URL", "https://eholt723-dailysignal.hf.space")
         try:
             send_to_one(
                 briefing_id=briefing[0],
