@@ -7,13 +7,19 @@ sdk: docker
 pinned: false
 ---
 
-[![CI](https://github.com/eholt723/dailysignal/actions/workflows/ci.yml/badge.svg)](https://github.com/eholt723/dailysignal/actions/workflows/ci.yml)
+[![CI/CD](https://github.com/eholt723/dailysignal/actions/workflows/ci.yml/badge.svg)](https://github.com/eholt723/dailysignal/actions/workflows/ci.yml)
 
 # DailySignal
 
 Automated AI news briefing service. Fetches from HackerNews, Product Hunt, and RSS feeds twice daily, synthesizes a briefing via Groq, and emails it to subscribers.
 
 Built by [Eric Holt](https://ericholt.dev)
+
+---
+
+## Deployment
+
+Every push to `main` triggers the CI/CD workflow. If all tests pass, the changes are automatically deployed to [Hugging Face Spaces](https://huggingface.co/spaces/eholt723/dailysignal). No manual deploy step required.
 
 ---
 

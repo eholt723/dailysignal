@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -22,3 +22,19 @@ jobs:
 
       - name: Run tests
         run: python -m pytest tests/ -v
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push to Hugging Face Spaces
+        run: |
+          git remote add space https://eholt723:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/eholt723/dailysignal
+          git push space main --force
