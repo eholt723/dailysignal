@@ -11,10 +11,12 @@ import psycopg2.extras
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
-
 from email_send import send_to_one
+from mcp_server import mcp
 
 app = FastAPI()
+
+app.mount("/mcp", mcp.http_app(path="/"))
 
 app.add_middleware(
     CORSMiddleware,

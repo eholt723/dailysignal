@@ -23,6 +23,20 @@ Every push to `main` triggers the CI/CD workflow. If all tests pass, the changes
 
 ---
 
+## MCP Server
+
+DailySignal exposes a [Model Context Protocol](https://modelcontextprotocol.io) server at `https://eholt723-dailysignal.hf.space/mcp` using FastMCP 3.2.4 (Streamable HTTP transport). It provides three read-only tools:
+
+| Tool | Description |
+|---|---|
+| `get_latest_briefing` | Returns the most recent morning and afternoon briefings |
+| `get_run_history` | Returns recent pipeline runs with timestamps and source counts (max 50) |
+| `get_subscriber_stats` | Returns subscriber counts and overall delivery success rate |
+
+To connect from a compatible MCP client (Claude Desktop, Cursor, etc.), point it at the `/mcp` URL above.
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
@@ -32,7 +46,8 @@ Every push to `main` triggers the CI/CD workflow. If all tests pass, the changes
 | LLM | Groq — llama-3.3-70b-versatile |
 | Database | PostgreSQL on Neon (psycopg2-binary 2.9.9) |
 | Email | Resend 2.26.0 |
-| API | FastAPI 0.115.0 + uvicorn 0.30.6 |
+| API | FastAPI 0.136.0 + uvicorn 0.30.6 |
+| MCP Server | FastMCP 3.2.4 — Streamable HTTP, mounted at `/mcp` |
 | Frontend | React 19, Vite 8, Tailwind CSS 4, react-router-dom 7, Recharts 3 |
 | Hosting | Hugging Face Spaces (Docker) |
 | Runtime | nginx + supervisord |
@@ -49,7 +64,8 @@ dailysignal/
 │   ├── synthesize.py     # Send new items to Groq; returns structured briefing text
 │   ├── store.py          # Write briefing + raw items to PostgreSQL
 │   ├── email_send.py     # Deliver briefing to active subscribers via Resend
-│   ├── api.py            # FastAPI — /briefings, /subscribe, /unsubscribe, /admin
+│   ├── api.py            # FastAPI — /briefings, /subscribe, /unsubscribe, /admin; mounts MCP at /mcp
+│   ├── mcp_server.py     # FastMCP server — get_latest_briefing, get_run_history, get_subscriber_stats
 │   ├── run.py            # CLI entrypoint: python run.py --period morning|afternoon
 │   └── requirements.txt
 ├── frontend/
@@ -76,7 +92,8 @@ dailysignal/
     ├── test_synthesize.py
     ├── test_store.py
     ├── test_email_send.py
-    └── test_api.py
+    ├── test_api.py
+    └── test_mcp_server.py
 ```
 
 ---
@@ -110,10 +127,11 @@ dailysignal/
            └─────────────────────┘
 
            ┌─────────────────────────────────────┐
-           │       Hugging Face Spaces           │     ┌───────────────┐
+           │       Hugging Face Spaces           │      ┌───────────────┐
            │  nginx (7860) ──▶ React/Vite       │      │   Neon DB     │
            │  supervisord   ──▶ FastAPI (8000)  │◀───▶│  (read-only)  │
-           └─────────────────────────────────────┘     └───────────────┘
+           │                   └─▶ /mcp (MCP)   │      └───────────────┘
+           └─────────────────────────────────────┘
 ```
 
 | Layer | Responsibility |
@@ -125,4 +143,5 @@ dailysignal/
 | store.py | Persists the briefing and raw items; returns `briefing_id` for delivery logging |
 | email_send.py | Sends per-subscriber emails via Resend with unique unsubscribe tokens |
 | api.py + FastAPI | Serves briefing data and handles subscribe/unsubscribe from the frontend |
+| mcp_server.py + FastMCP | Exposes briefing data as MCP tools at `/mcp` (Streamable HTTP) |
 | React/Vite frontend | Renders briefings, history, admin stats, and subscriber management |
