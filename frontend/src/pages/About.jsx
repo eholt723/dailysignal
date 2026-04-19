@@ -2,32 +2,26 @@ import { Link } from "react-router-dom";
 
 const PIPELINE_STEPS = [
   {
-    num: "01",
     title: "Fetch",
     desc: "Every 8 hours, a GitHub Actions job pulls from HackerNews, Product Hunt, and five RSS feeds — no servers to keep alive.",
   },
   {
-    num: "02",
     title: "Deduplicate",
     desc: "Each item is hashed and checked against previously stored hashes in PostgreSQL. Only genuinely new items make it through.",
   },
   {
-    num: "03",
     title: "Synthesize",
     desc: "New items are sent to a Groq-hosted LLM which writes a structured briefing: top stories, product highlights, and community picks.",
   },
   {
-    num: "04",
     title: "Store",
     desc: "The briefing and all raw items land in Neon PostgreSQL — available instantly to the frontend API.",
   },
   {
-    num: "05",
     title: "Email",
     desc: "The briefing is sent to every active subscriber via Resend. Each email includes a unique unsubscribe link.",
   },
   {
-    num: "06",
     title: "Serve",
     desc: "The React frontend on Hugging Face Spaces shows the latest briefings, run history, and subscriber stats — always up to date.",
   },
@@ -81,6 +75,7 @@ const STACK = [
   { name: "React + Vite", role: "Frontend" },
   { name: "Tailwind CSS", role: "Styling" },
   { name: "Hugging Face Spaces", role: "Frontend hosting (Docker)" },
+  { name: "FastMCP", role: "MCP server exposing briefings and subscribers as tools" },
 ];
 
 export default function About() {
@@ -107,18 +102,18 @@ export default function About() {
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">How It Works</h2>
         <div className="space-y-0">
           {PIPELINE_STEPS.map((step, i) => (
-            <div key={step.num} className="flex gap-5">
+            <div key={step.title} className="flex gap-4">
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-cyan-100 dark:bg-cyan-900/50 border border-cyan-400 dark:border-cyan-700 flex items-center justify-center text-xs font-mono text-cyan-700 dark:text-cyan-400 shrink-0">
-                  {step.num}
+                <div className="w-8 h-8 rounded-full bg-cyan-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                  {i + 1}
                 </div>
                 {i < PIPELINE_STEPS.length - 1 && (
-                  <div className="w-px flex-1 bg-gray-200 dark:bg-gray-800 my-1" />
+                  <div className="w-px flex-1 bg-gray-200 dark:bg-gray-700 my-1" />
                 )}
               </div>
-              <div className="pb-8">
-                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1">{step.title}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{step.desc}</div>
+              <div className="pb-6">
+                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 mt-1">{step.title}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{step.desc}</p>
               </div>
             </div>
           ))}
