@@ -14,9 +14,11 @@ from pydantic import BaseModel, EmailStr
 from email_send import send_to_one
 from mcp_server import mcp
 
-app = FastAPI()
+_mcp_asgi = mcp.http_app(path="/")
 
-app.mount("/mcp", mcp.http_app(path="/"))
+app = FastAPI(lifespan=_mcp_asgi.lifespan)
+
+app.mount("/mcp", _mcp_asgi)
 
 app.add_middleware(
     CORSMiddleware,
