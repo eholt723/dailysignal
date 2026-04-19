@@ -34,7 +34,7 @@ def _markdown_to_html(md: str) -> str:
         elif line.strip() == "":
             lines.append("<br>")
         else:
-            lines.append(f"<p>{_linkify(line)}</p>")
+            lines.append(f'<p style="margin:0 0 10px 0;">{_linkify(line)}</p>')
     return "\n".join(lines)
 
 
