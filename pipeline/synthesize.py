@@ -16,7 +16,7 @@ Your briefings are structured into three sections:
 
 Rules:
 - Write in plain English, no jargon
-- Write each section as a single flowing paragraph — do not put each item on its own line
+- Each item gets its own line — do not combine multiple items into one run-on sentence
 - Each item: one sentence max, link the source name to the article URL using markdown format: ([SourceName](url))
 - No filler phrases like "In today's briefing..." or "That's all for now"
 - If a section has nothing relevant, omit it entirely
