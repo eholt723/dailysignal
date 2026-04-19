@@ -19,7 +19,7 @@ class TestMarkdownToHtml:
         assert _markdown_to_html("") == "<br>"
 
     def test_plain_text_becomes_paragraph(self):
-        assert _markdown_to_html("Hello world") == "<p>Hello world</p>"
+        assert _markdown_to_html("Hello world") == '<p style="margin:0 0 10px 0;">Hello world</p>'
 
     def test_multiline(self):
         md = "## Top Stories\n- item one\n\nSome text"
@@ -27,7 +27,7 @@ class TestMarkdownToHtml:
         assert "<h2>Top Stories</h2>" in html
         assert "<li>item one</li>" in html
         assert "<br>" in html
-        assert "<p>Some text</p>" in html
+        assert '<p style="margin:0 0 10px 0;">Some text</p>' in html
 
 
 def make_mock_conn(subscribers=None):
