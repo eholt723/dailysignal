@@ -23,7 +23,7 @@ const PIPELINE_STEPS = [
   },
   {
     title: "Serve",
-    desc: "The React frontend on Hugging Face Spaces shows the latest briefings, run history, and subscriber stats — always up to date.",
+    desc: "The React frontend on Hugging Face Spaces shows the latest briefings, run history, and subscriber stats. An MCP server also exposes this data as tools, letting AI agents query briefings and subscriber counts directly.",
   },
 ];
 
@@ -63,7 +63,8 @@ const ACHIEVEMENTS = [
   "PostgreSQL on Neon with delivery audit log per subscriber per run",
   "React + Vite frontend deployed as Docker on Hugging Face Spaces",
   "Admin dashboard: subscriber counts and last 10 delivery statuses",
-  "55 unit tests covering all pipeline modules and API endpoints; 98% code coverage; no API keys or database credentials required to run tests; CI runs on every push via GitHub Actions",
+  "FastMCP server mounted at /mcp — exposes briefings, run history, and subscriber counts as tools for AI agents to query",
+  "62 unit tests covering all pipeline modules and API endpoints; 98% code coverage; no API keys or database credentials required to run tests; CI runs on every push via GitHub Actions",
 ];
 
 const STACK = [
